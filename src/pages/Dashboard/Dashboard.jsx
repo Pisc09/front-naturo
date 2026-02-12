@@ -18,23 +18,56 @@ import {
 } from "@heroicons/react/24/outline";
 import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import { Link } from "react-router-dom";
 
 const navigation = [
-  { name: "Mes Suivis", href: "#", icon: FolderIcon, current: false },
-  { name: "Recherche", href: "#", icon: ServerIcon, current: false },
-  { name: "Mes Favoris", href: "#", icon: SignalIcon, current: false },
-  { name: "Mes Rendez-vous", href: "#", icon: GlobeAltIcon, current: false },
+  { name: "Mes Suivis", to: "/dashboard", icon: FolderIcon, current: false },
+  {
+    name: "Recherche",
+    to: "/dashboard/recherche",
+    icon: ServerIcon,
+    current: false,
+  },
+  {
+    name: "Mes Favoris",
+    to: "/dashboard/favoris",
+    icon: SignalIcon,
+    current: false,
+  },
+  {
+    name: "Mes Rendez-vous",
+    to: "/dashboard/rdv",
+    icon: GlobeAltIcon,
+    current: false,
+  },
   {
     name: "Mes Pro de Santé",
-    href: "#",
+    to: "/dashboard/pro-sante",
     icon: ChartBarSquareIcon,
     current: false,
   },
-  { name: "Mon Compte", href: "#", icon: Cog6ToothIcon, current: true },
+  {
+    name: "Mon Compte",
+    to: "/dashboard/profil",
+    icon: Cog6ToothIcon,
+    current: true,
+  },
 ];
-const teams = [
-  { id: 1, name: "Abonnement", href: "#", initial: "A", current: false },
-  { id: 2, name: "Paramètres", href: "#", initial: "P", current: false },
+const preferences = [
+  {
+    id: 1,
+    name: "Abonnement",
+    to: "/dashboard/abonnement",
+    initial: "A",
+    current: false,
+  },
+  {
+    id: 2,
+    name: "Paramètres",
+    to: "/dashboard/parametres",
+    initial: "P",
+    current: false,
+  },
 ];
 
 function classNames(...classes) {
@@ -101,8 +134,8 @@ function Dashboard() {
                       <ul role="list" className="-mx-2 space-y-1">
                         {navigation.map((item) => (
                           <li key={item.name}>
-                            <a
-                              href={item.href}
+                            <Link
+                              to={item.to}
                               className={classNames(
                                 item.current
                                   ? "bg-gray-50 text-indigo-600"
@@ -120,7 +153,7 @@ function Dashboard() {
                                 )}
                               />
                               {item.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -130,10 +163,10 @@ function Dashboard() {
                         Préférences
                       </div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
-                        {teams.map((team) => (
+                        {preferences.map((team) => (
                           <li key={team.name}>
-                            <a
-                              href={team.href}
+                            <Link
+                              to={team.to}
                               className={classNames(
                                 team.current
                                   ? "bg-gray-50 text-indigo-600"
@@ -152,7 +185,7 @@ function Dashboard() {
                                 {team.initial}
                               </span>
                               <span className="truncate">{team.name}</span>
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -183,8 +216,8 @@ function Dashboard() {
                       <ul role="list" className="-mx-2 space-y-1">
                         {navigation.map((item) => (
                           <li key={item.name}>
-                            <a
-                              href={item.href}
+                            <Link
+                              to={item.to}
                               className={classNames(
                                 item.current
                                   ? "bg-gray-50 text-indigo-600"
@@ -202,7 +235,7 @@ function Dashboard() {
                                 )}
                               />
                               {item.name}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -212,10 +245,10 @@ function Dashboard() {
                         Préférences
                       </div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
-                        {teams.map((team) => (
+                        {preferences.map((team) => (
                           <li key={team.name}>
-                            <a
-                              href={team.href}
+                            <Link
+                              to={team.to}
                               className={classNames(
                                 team.current
                                   ? "bg-gray-50 text-indigo-600"
@@ -234,7 +267,7 @@ function Dashboard() {
                                 {team.initial}
                               </span>
                               <span className="truncate">{team.name}</span>
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
@@ -242,8 +275,8 @@ function Dashboard() {
                   </ul>
                 </li>
                 <li className="-mx-6 mt-auto">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-50"
                   >
                     <img
@@ -253,7 +286,7 @@ function Dashboard() {
                     />
                     <span className="sr-only">Votre profile</span>
                     <span aria-hidden="true">Dupont Dupont</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -272,14 +305,14 @@ function Dashboard() {
           <div className="flex-1 text-sm/6 font-semibold text-gray-900">
             Dashboard
           </div>
-          <a href="#">
+          <Link to="#">
             <span className="sr-only">Your profile</span>
             <img
               alt=""
               src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
               className="size-8 rounded-full bg-gray-50 outline -outline-offset-1 outline-black/5"
             />
-          </a>
+          </Link>
         </div>
 
         <main className="py-10 lg:pl-72">

@@ -1,628 +1,217 @@
 "use client";
-
-import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  TransitionChild,
-} from "@headlessui/react";
-import {
-  ChartBarSquareIcon,
-  Cog6ToothIcon,
-  FolderIcon,
-  GlobeAltIcon,
-  ServerIcon,
-  SignalIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { Bars3Icon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
-
-const navigation = [
-  { name: "Mes Suivis", href: "#", icon: FolderIcon, current: false },
-  { name: "Recherche", href: "#", icon: ServerIcon, current: false },
-  { name: "Mes Favoris", href: "#", icon: SignalIcon, current: false },
-  { name: "Mes Rendez-vous", href: "#", icon: GlobeAltIcon, current: false },
-  {
-    name: "Mes Pro de Santé",
-    href: "#",
-    icon: ChartBarSquareIcon,
-    current: false,
-  },
-  { name: "Mon Compte", href: "#", icon: Cog6ToothIcon, current: true },
-];
-const teams = [
-  { id: 1, name: "Abonnement", href: "#", initial: "A", current: false },
-  { id: 2, name: "Paramètres", href: "#", initial: "P", current: false },
-];
-const secondaryNavigation = [
-  { name: "Mes Suivis", href: "#", current: false },
-  { name: "Mes favoris", href: "#", current: false },
-  { name: "Mes RDV", href: "#", current: false },
-  { name: "Mes Pros", href: "#", current: false },
-  { name: "Notifications", href: "#", current: false },
-  { name: "Compte", href: "#", current: true },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import React from "react";
 
 function Profil() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
-    <>
-      {/*
-        This example requires updating your template:
+    <div className="min-h-screen bg-gray-50">
+      <main>
+        {/* Settings forms */}
+        <div className="divide-y divide-gray-200">
+          {/* Personal Information */}
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <div>
+              <h2 className="text-base/7 font-semibold text-gray-900">
+                Informations personnelles
+              </h2>
+              <p className="mt-1 text-sm/4 text-gray-500">
+                Utilisez une adresse permanente où vous pouvez recevoir du
+                courrier.
+              </p>
+            </div>
 
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
-      <div>
-        <Dialog
-          open={sidebarOpen}
-          onClose={setSidebarOpen}
-          className="relative z-50 xl:hidden"
-        >
-          <DialogBackdrop
-            transition
-            className="fixed inset-0 bg-gray-900/80 transition-opacity duration-300 ease-linear data-closed:opacity-0"
-          />
-
-          <div className="fixed inset-0 flex">
-            <DialogPanel
-              transition
-              className="relative mr-16 flex w-full max-w-xs flex-1 transform transition duration-300 ease-in-out data-closed:-translate-x-full"
-            >
-              <TransitionChild>
-                <div className="absolute top-0 left-full flex w-16 justify-center pt-5 duration-300 ease-in-out data-closed:opacity-0">
-                  <button
-                    type="button"
-                    onClick={() => setSidebarOpen(false)}
-                    className="-m-2.5 p-2.5"
-                  >
-                    <span className="sr-only">Close sidebar</span>
-                    <XMarkIcon
-                      aria-hidden="true"
-                      className="size-6 text-white"
-                    />
-                  </button>
-                </div>
-              </TransitionChild>
-
-              {/* SidebarLayout component, swap this element with another sidebar if you like */}
-              <div className="relative flex grow flex-col gap-y-5 overflow-y-auto bg-gray-50 px-6">
-                <div className="relative flex h-16 shrink-0 items-center">
+            <form className="md:col-span-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="col-span-full flex items-center gap-x-8">
                   <img
-                    alt="Your Company"
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                    className="h-8 w-auto"
+                    alt=""
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    className="size-24 flex-none rounded-lg bg-gray-100 object-cover outline outline-1 outline-offset-[-1px] outline-black/5"
                   />
-                </div>
-                <nav className="relative flex flex-1 flex-col">
-                  <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                    <li>
-                      <ul role="list" className="-mx-2 space-y-1">
-                        {navigation.map((item) => (
-                          <li key={item.name}>
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                item.current
-                                  ? "bg-gray-100 text-indigo-600"
-                                  : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600",
-                                "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold",
-                              )}
-                            >
-                              <item.icon
-                                aria-hidden="true"
-                                className={classNames(
-                                  item.current
-                                    ? "text-indigo-600"
-                                    : "text-gray-400 group-hover:text-indigo-600",
-                                  "size-6 shrink-0",
-                                )}
-                              />
-                              {item.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                    <li>
-                      <div className="text-xs/6 font-semibold text-gray-400">
-                        Préférences
-                      </div>
-                      <ul role="list" className="-mx-2 mt-2 space-y-1">
-                        {teams.map((team) => (
-                          <li key={team.name}>
-                            <a
-                              href={team.href}
-                              className={classNames(
-                                team.current
-                                  ? "bg-gray-100 text-indigo-600"
-                                  : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600",
-                                "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold",
-                              )}
-                            >
-                              <span
-                                className={classNames(
-                                  team.current
-                                    ? "border-indigo-600 text-indigo-600"
-                                    : "border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600",
-                                  "flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium",
-                                )}
-                              >
-                                {team.initial}
-                              </span>
-                              <span className="truncate">{team.name}</span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                    <li className="-mx-6 mt-auto">
-                      <a
-                        href="#"
-                        className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100"
-                      >
-                        <img
-                          alt=""
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          className="size-8 rounded-full bg-gray-100 outline -outline-offset-1 outline-black/5"
-                        />
-                        <span className="sr-only">Your profile</span>
-                        <span aria-hidden="true">Tom Cook</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </DialogPanel>
-          </div>
-        </Dialog>
-
-        {/* Static sidebar for desktop */}
-        <div className="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
-          {/* SidebarLayout component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-50 px-6 ring-1 ring-gray-200">
-            <div className="flex h-16 shrink-0 items-center">
-              <img
-                alt="Your Company"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
-              />
-            </div>
-            <nav className="flex flex-1 flex-col">
-              <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                <li>
-                  <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
-                      <li key={item.name}>
-                        <a
-                          href={item.href}
-                          className={classNames(
-                            item.current
-                              ? "bg-gray-100 text-indigo-600"
-                              : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600",
-                            "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold",
-                          )}
-                        >
-                          <item.icon
-                            aria-hidden="true"
-                            className={classNames(
-                              item.current
-                                ? "text-indigo-600"
-                                : "text-gray-400 group-hover:text-indigo-600",
-                              "size-6 shrink-0",
-                            )}
-                          />
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-                <li>
-                  <div className="text-xs/6 font-semibold text-gray-500">
-                    Préférences
+                  <div>
+                    <button
+                      type="button"
+                      className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-gray-300 hover:bg-gray-100"
+                    >
+                      Changer d’avatar
+                    </button>
+                    <p className="mt-2 text-xs/5 text-gray-500">
+                      JPG, GIF or PNG. 1MB max.
+                    </p>
                   </div>
-                  <ul role="list" className="-mx-2 mt-2 space-y-1">
-                    {teams.map((team) => (
-                      <li key={team.name}>
-                        <a
-                          href={team.href}
-                          className={classNames(
-                            team.current
-                              ? "bg-gray-100 text-indigo-600"
-                              : "text-gray-700 hover:bg-gray-100 hover:text-indigo-600",
-                            "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold",
-                          )}
-                        >
-                          <span
-                            className={classNames(
-                              team.current
-                                ? "border-indigo-600 text-indigo-600"
-                                : "border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600",
-                              "flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium",
-                            )}
-                          >
-                            {team.initial}
-                          </span>
-                          <span className="truncate">{team.name}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-                <li className="-mx-6 mt-auto">
-                  <a
-                    href="#"
-                    className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100"
+                </div>
+
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="first-name"
+                    className="block text-sm/6 font-medium text-gray-900"
                   >
-                    <img
-                      alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      className="size-8 rounded-full bg-gray-100 outline -outline-offset-1 outline-black/5"
+                    Prénom
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="first-name"
+                      name="first-name"
+                      type="text"
+                      autoComplete="given-name"
+                      className="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm/6"
                     />
-                    <span className="sr-only">Your profile</span>
-                    <span aria-hidden="true">Tom Cook</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-
-        <div className="xl:pl-72">
-          {/* Sticky search header */}
-          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-6 border-b border-gray-200 bg-white px-4 shadow-xs sm:px-6 lg:px-8">
-            <button
-              type="button"
-              onClick={() => setSidebarOpen(true)}
-              className="-m-2.5 p-2.5 text-gray-900 xl:hidden"
-            >
-              <span className="sr-only">Open sidebar</span>
-              <Bars3Icon aria-hidden="true" className="size-5" />
-            </button>
-
-            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-              <form action="#" method="GET" className="grid flex-1 grid-cols-1">
-                <input
-                  name="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  className="col-start-1 row-start-1 block size-full bg-transparent pl-8 text-base text-gray-900 outline-hidden placeholder:text-gray-400 sm:text-sm/6"
-                />
-                <MagnifyingGlassIcon
-                  aria-hidden="true"
-                  className="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"
-                />
-              </form>
-            </div>
-          </div>
-
-          <main>
-            <h1 className="sr-only">Account Settings</h1>
-
-            <header className="border-b border-gray-200">
-              {/* Secondary navigation */}
-              <nav className="flex overflow-x-auto py-4">
-                <ul
-                  role="list"
-                  className="flex min-w-full flex-none gap-x-6 px-4 text-sm/6 font-semibold text-gray-500 sm:px-6 lg:px-8"
-                >
-                  {secondaryNavigation.map((item) => (
-                    <li key={item.name}>
-                      <a
-                        href={item.href}
-                        className={item.current ? "text-indigo-600" : ""}
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </header>
-
-            {/* Settings forms */}
-            <div className="divide-y divide-gray-200">
-              <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-                <div>
-                  <h2 className="text-base/7 font-semibold text-gray-900">
-                    Personal Information
-                  </h2>
-                  <p className="mt-1 text-sm/6 text-gray-500">
-                    Use a permanent address where you can receive mail.
-                  </p>
+                  </div>
                 </div>
 
-                <form className="md:col-span-2">
-                  <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                    <div className="col-span-full flex items-center gap-x-8">
-                      <img
-                        alt=""
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        className="size-24 flex-none rounded-lg bg-gray-100 object-cover outline -outline-offset-1 outline-black/5"
-                      />
-                      <div>
-                        <button
-                          type="button"
-                          className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-100"
-                        >
-                          Change avatar
-                        </button>
-                        <p className="mt-2 text-xs/5 text-gray-500">
-                          JPG, GIF or PNG. 1MB max.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-3">
-                      <label
-                        htmlFor="first-name"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Prénom
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="first-name"
-                          name="first-name"
-                          type="text"
-                          autoComplete="given-name"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-3">
-                      <label
-                        htmlFor="last-name"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Nom
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="last-name"
-                          name="last-name"
-                          type="text"
-                          autoComplete="family-name"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="email"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Adresse email
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          autoComplete="email"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="username"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Pseudo
-                      </label>
-                      <div className="mt-2">
-                        <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 sm:text-sm/6">
-                          <div className="shrink-0 text-base text-gray-500 select-none sm:text-sm/6">
-                            example.com/
-                          </div>
-                          <input
-                            id="username"
-                            name="username"
-                            type="text"
-                            placeholder="janesmith"
-                            className="block min-w-0 grow bg-transparent py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="timezone"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Timezone
-                      </label>
-                      <div className="mt-2 grid grid-cols-1">
-                        <select
-                          id="timezone"
-                          name="timezone"
-                          className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        >
-                          <option>Pacific Standard Time</option>
-                          <option>Eastern Standard Time</option>
-                          <option>Greenwich Mean Time</option>
-                        </select>
-                        <ChevronDownIcon
-                          aria-hidden="true"
-                          className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-400 sm:size-4"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 flex">
-                    <button
-                      type="submit"
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-                <div>
-                  <h2 className="text-base/7 font-semibold text-gray-900">
-                    Change password
-                  </h2>
-                  <p className="mt-1 text-sm/6 text-gray-500">
-                    Update your password associated with your account.
-                  </p>
-                </div>
-
-                <form className="md:col-span-2">
-                  <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="current-password"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Current password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="current-password"
-                          name="current_password"
-                          type="password"
-                          autoComplete="current-password"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="new-password"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        New password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="new-password"
-                          name="new_password"
-                          type="password"
-                          autoComplete="new-password"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="confirm-password"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Confirm password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="confirm-password"
-                          name="confirm_password"
-                          type="password"
-                          autoComplete="new-password"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 flex">
-                    <button
-                      type="submit"
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Save
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-                <div>
-                  <h2 className="text-base/7 font-semibold text-gray-900">
-                    Log out other sessions
-                  </h2>
-                  <p className="mt-1 text-sm/6 text-gray-500">
-                    Please enter your password to confirm you would like to log
-                    out of your other sessions across all of your devices.
-                  </p>
-                </div>
-
-                <form className="md:col-span-2">
-                  <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-                    <div className="col-span-full">
-                      <label
-                        htmlFor="logout-password"
-                        className="block text-sm/6 font-medium text-gray-900"
-                      >
-                        Your password
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="logout-password"
-                          name="password"
-                          type="password"
-                          autoComplete="current-password"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 flex">
-                    <button
-                      type="submit"
-                      className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Log out other sessions
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <div className="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
-                <div>
-                  <h2 className="text-base/7 font-semibold text-gray-900">
-                    Delete account
-                  </h2>
-                  <p className="mt-1 text-sm/6 text-gray-500">
-                    No longer want to use our service? You can delete your
-                    account here. This action is not reversible. All information
-                    related to this account will be deleted permanently.
-                  </p>
-                </div>
-
-                <form className="flex items-start md:col-span-2">
-                  <button
-                    type="submit"
-                    className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500"
+                <div className="sm:col-span-3">
+                  <label
+                    htmlFor="last-name"
+                    className="block text-sm/6 font-medium text-gray-900"
                   >
-                    Yes, delete my account
-                  </button>
-                </form>
+                    Nom
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="last-name"
+                      name="last-name"
+                      type="text"
+                      autoComplete="family-name"
+                      className="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    Adresse e-mail
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      className="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    Identifiant
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md shadow-sm ring-1 ring-gray-300 ring-inset focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-inset sm:max-w-md">
+                      <span className="flex items-center pl-3 text-gray-500 select-none sm:text-sm">
+                        example : janesmith
+                      </span>
+                      <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder=""
+                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <div className="mt-8 flex">
+                <button
+                  type="submit"
+                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Valider
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Change password */}
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+            <div>
+              <h2 className="text-base/7 font-semibold text-gray-900">
+                Changer le mot de passe
+              </h2>
+              <p className="mt-1 text-sm/6 text-gray-500">
+                Mettez à jour le mot de passe associé à votre compte.
+              </p>
             </div>
-          </main>
+
+            <form className="md:col-span-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+                <div className="col-span-full">
+                  <label
+                    htmlFor="current-password"
+                    className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    Mot de passe actuel
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="current-password"
+                      name="current_password"
+                      type="password"
+                      autoComplete="current-password"
+                      className="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="new-password"
+                    className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    Nouveau mot de passe
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="new-password"
+                      name="new_password"
+                      type="password"
+                      autoComplete="new-password"
+                      className="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-full">
+                  <label
+                    htmlFor="confirm-password"
+                    className="block text-sm/6 font-medium text-gray-900"
+                  >
+                    Confirmer le mot de passe
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="confirm-password"
+                      name="confirm_password"
+                      type="password"
+                      autoComplete="new-password"
+                      className="block w-full rounded-md border-0 bg-white px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:ring-inset sm:text-sm/6"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 flex">
+                <button
+                  type="submit"
+                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Valider
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Tu peux ajouter ici les sections "Log out other sessions" et "Delete account" avec la même structure si besoin */}
         </div>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }
 
