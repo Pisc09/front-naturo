@@ -1,25 +1,43 @@
 import React, { useState } from "react";
-import { login } from "../../service/Auth.jsx";
+import { login } from "../../service/authService.jsx";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
 
   async function handleLogin(event) {
     event.preventDefault();
     try {
-      const { token } = await login({ email, password });
+      await login({ email, password }); // ← login stocke token + userId + userData
 
-      if (!token) {
-        throw new Error("Token manquant dans la réponse");
-      }
+      // Attente active : on boucle jusqu'à ce que userId soit vraiment dans localStorage
+      const waitForUserId = () =>
+        new Promise((resolve, reject) => {
+          let attempts = 0;
+          const interval = setInterval(() => {
+            attempts++;
+            if (localStorage.getItem("userId")) {
+              clearInterval(interval);
+              resolve();
+            } else if (attempts > 10) {
+              // max ~1 seconde
+              clearInterval(interval);
+              reject(new Error("Timeout : userId non stocké après 1s"));
+            }
+          }, 100);
+        });
 
-      localStorage.setItem("authToken", token);
+      // On attend que userId soit disponible
+      await waitForUserId();
+
+      console.log("[LOGIN] userId détecté, redirection vers dashboard");
+
+      // Redirection une fois prêt
       navigate("/dashboard");
-    } catch {
+    } catch (error) {
+      console.error("Échec connexion:", error);
       alert("Échec de la connexion. Veuillez vérifier vos identifiants.");
     }
   }

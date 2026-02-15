@@ -27,19 +27,20 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { logout } from "../../../service/Auth.jsx";
+import { logout } from "../../../service/authService.jsx";
+import { useAuth } from "../../../hooks/useAuth.js";
 
 const navigation = [
-  { name: "Dashboard", to: "/dashboard", icon: HomeIcon, end: true },
-  { name: "Team", to: "/dashboard/recherche", icon: UsersIcon },
-  { name: "Projects", to: "/dashboard/favoris", icon: FolderIcon },
-  { name: "Calendar", to: "/dashboard/rdv", icon: CalendarIcon },
+  { name: "Mes Suivis", to: "/dashboard", icon: HomeIcon, end: true },
+  { name: "Recherche", to: "/dashboard/recherche", icon: UsersIcon },
+  { name: "Mes Favoris", to: "/dashboard/favoris", icon: FolderIcon },
+  { name: "Mes Rendez-vous", to: "/dashboard/rdv", icon: CalendarIcon },
   {
-    name: "Documents",
+    name: "Mes Pro de Santé",
     to: "/dashboard/pro-sante",
     icon: DocumentDuplicateIcon,
   },
-  { name: "Reports", to: "/dashboard/profil", icon: ChartPieIcon },
+  { name: "Mon Compte", to: "/dashboard/profil", icon: ChartPieIcon },
 ];
 
 const teams = [
@@ -61,6 +62,7 @@ function classNames(...classes) {
 }
 
 function SidebarDashboard() {
+  const { user, loading } = useAuth(); // ← on récupère l'utilisateur depuis le contexte
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -68,6 +70,15 @@ function SidebarDashboard() {
     logout();
     navigate("/login");
   };
+
+  // Nom complet à afficher (avec fallback)
+  const displayName = loading
+    ? "Chargement..."
+    : user
+      ? `${user.firstname || ""} ${user.lastname || ""}`.trim() || "Utilisateur"
+      : "Invité";
+
+  console.log("user:", user, "loading:", loading);
 
   return (
     <>
@@ -98,7 +109,6 @@ function SidebarDashboard() {
                 </button>
               </div>
             </TransitionChild>
-
             <div className="relative flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
               <div className="flex h-16 shrink-0 items-center">
                 <img
@@ -107,7 +117,6 @@ function SidebarDashboard() {
                   className="h-8 w-auto"
                 />
               </div>
-
               <nav className="flex flex-1 flex-col">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
                   <li>
@@ -142,7 +151,6 @@ function SidebarDashboard() {
                       ))}
                     </ul>
                   </li>
-
                   <li>
                     <div className="text-xs/6 font-semibold text-gray-400">
                       Préférences
@@ -152,7 +160,6 @@ function SidebarDashboard() {
                         <li key={team.name}>
                           <NavLink
                             to={team.to}
-                            end={team.end}
                             className={({ isActive }) =>
                               classNames(
                                 isActive
@@ -179,8 +186,6 @@ function SidebarDashboard() {
                       ))}
                     </ul>
                   </li>
-
-                  {/* Ajout Déconnexion dans sidebar (optionnel mais utile) */}
                   <li className="mt-auto">
                     <button
                       onClick={handleLogout}
@@ -210,7 +215,6 @@ function SidebarDashboard() {
               className="h-8 w-auto"
             />
           </div>
-
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
@@ -245,7 +249,6 @@ function SidebarDashboard() {
                   ))}
                 </ul>
               </li>
-
               <li>
                 <div className="text-xs/6 font-semibold text-gray-400">
                   Préférences
@@ -281,8 +284,6 @@ function SidebarDashboard() {
                   ))}
                 </ul>
               </li>
-
-              {/* Ajout Déconnexion dans sidebar desktop */}
               <li className="mt-auto">
                 <NavLink
                   to="#"
@@ -310,11 +311,9 @@ function SidebarDashboard() {
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon aria-hidden="true" className="size-6" />
           </button>
-
           <div aria-hidden="true" className="h-6 w-px bg-gray-200 lg:hidden" />
-
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            {/* Barre de recherche → fidèle à ton code original */}
+            {/* Barre de recherche */}
             <form action="#" method="GET" className="grid flex-1 grid-cols-1">
               <input
                 name="search"
@@ -327,7 +326,6 @@ function SidebarDashboard() {
                 className="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400"
               />
             </form>
-
             <div className="flex items-center gap-x-4 lg:gap-x-6">
               <button
                 type="button"
@@ -336,28 +334,26 @@ function SidebarDashboard() {
                 <span className="sr-only">View notifications</span>
                 <BellIcon aria-hidden="true" className="size-6" />
               </button>
-
               <div
                 aria-hidden="true"
                 className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200"
               />
-
-              {/* Profile dropdown */}
+              {/* Profile dropdown – AFFICHAGE DU NOM ET PRÉNOM */}
               <Menu as="div" className="relative">
                 <MenuButton className="relative flex items-center">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
                   <img
-                    alt=""
+                    alt="Photo de profil"
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     className="size-8 rounded-full bg-gray-50 outline -outline-offset-1 outline-black/5"
                   />
                   <span className="hidden lg:flex lg:items-center">
                     <span
                       aria-hidden="true"
-                      className="ml-4 text-sm/6 font-semibold text-gray-900"
+                      className="ml-4 text-sm/6 font-semibold text-gray-900 capitalize"
                     >
-                      Tom Cook
+                      {displayName}
                     </span>
                     <ChevronDownIcon
                       aria-hidden="true"
@@ -365,7 +361,6 @@ function SidebarDashboard() {
                     />
                   </span>
                 </MenuButton>
-
                 <MenuItems
                   transition
                   className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg outline-1 outline-gray-900/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
@@ -382,7 +377,6 @@ function SidebarDashboard() {
                       ) : (
                         <NavLink
                           to={item.to}
-                          end={item.end}
                           className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-hidden"
                         >
                           {item.name}
@@ -395,7 +389,6 @@ function SidebarDashboard() {
             </div>
           </div>
         </div>
-
         <main className="py-10">
           <div className="px-4 sm:px-6 lg:px-8">
             <Outlet />

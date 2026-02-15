@@ -37,7 +37,7 @@ function Header() {
             <Link
               key={item.name}
               to={item.to}
-              className="text-sm/6 font-semibold text-emerald-600"
+              className="text-sm/6 font-semibold text-indigo-600"
             >
               {item.name}
             </Link>
@@ -46,13 +46,13 @@ function Header() {
         <div className="flex flex-1 items-center justify-end gap-x-6">
           <Link
             to="/login"
-            className="hidden text-sm/6 font-semibold text-emerald-600 lg:block"
+            className="hidden text-sm/6 font-semibold text-indigo-600 lg:block"
           >
             Connexion
           </Link>
           <Link
             to="/register"
-            className="rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-emerald-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
           >
             Inscription
           </Link>
@@ -86,7 +86,7 @@ function Header() {
             </Link>
             <Link
               to="/register"
-              className="ml-auto rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-emerald-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              className="ml-auto rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             >
               Inscription
             </Link>
@@ -106,7 +106,7 @@ function Header() {
                   <Link
                     key={item.name}
                     to={item.to}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-emerald-600 hover:bg-white/5"
+                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-indigo-600 hover:bg-white/5"
                   >
                     {item.name}
                   </Link>
@@ -115,7 +115,7 @@ function Header() {
               <div className="py-6">
                 <Link
                   to="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-emerald-600 hover:bg-white/5"
+                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-indigo-600 hover:bg-white/5"
                 >
                   Connexion
                 </Link>
