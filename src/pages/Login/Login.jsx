@@ -10,31 +10,7 @@ function Login() {
   async function handleLogin(event) {
     event.preventDefault();
     try {
-      await login({ email, password }); // ← login stocke token + userId + userData
-
-      // Attente active : on boucle jusqu'à ce que userId soit vraiment dans localStorage
-      const waitForUserId = () =>
-        new Promise((resolve, reject) => {
-          let attempts = 0;
-          const interval = setInterval(() => {
-            attempts++;
-            if (localStorage.getItem("userId")) {
-              clearInterval(interval);
-              resolve();
-            } else if (attempts > 10) {
-              // max ~1 seconde
-              clearInterval(interval);
-              reject(new Error("Timeout : userId non stocké après 1s"));
-            }
-          }, 100);
-        });
-
-      // On attend que userId soit disponible
-      await waitForUserId();
-
-      console.log("[LOGIN] userId détecté, redirection vers dashboard");
-
-      // Redirection une fois prêt
+      await login({ email, password });
       navigate("/dashboard");
     } catch (error) {
       console.error("Échec connexion:", error);

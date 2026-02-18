@@ -1,5 +1,5 @@
-// authService.jsx
 import apiClient from "./api.jsx";
+
 /**
  * Connexion d'un utilisateur
  * @param {Object} credentials - { email, password }
@@ -9,23 +9,27 @@ export async function login(credentials) {
   try {
     const response = await apiClient.post("/auth/login", credentials);
     const { token, type, role } = response.data;
+
     if (!token) {
       throw new Error("Token manquant dans la réponse");
     }
+
     // Stockage du token
     localStorage.setItem("authToken", token);
+
     // Stockage du rôle
     if (role) {
       localStorage.setItem("userRole", role);
     }
-    // ──────────────── STOCKAGE DE L'ID UTILISATEUR ────────────────
-    // Cherche id sous toutes les formes possibles dans la réponse
+
+    // STOCKAGE DE L'ID UTILISATEUR
     const userId =
       response.data.id ||
       response.data.userId ||
       response.data.user?.id ||
       response.data.user_id ||
       response.data.user?.userId;
+
     if (userId) {
       localStorage.setItem("userId", userId.toString());
       console.log("[LOGIN] userId stocké :", userId);
@@ -34,9 +38,11 @@ export async function login(credentials) {
         "[LOGIN] Aucun ID utilisateur dans la réponse de /auth/login",
       );
     }
-    // ──────────────── STOCKAGE DIRECT PRÉNOM / NOM (si présents) ────────────────
+
+    // STOCKAGE DIRECT PRÉNOM / NOM (si présents dans la réponse)
     const firstname = response.data.firstname || response.data.user?.firstname;
     const lastname = response.data.lastname || response.data.user?.lastname;
+
     if (firstname || lastname) {
       localStorage.setItem(
         "userData",
@@ -48,8 +54,8 @@ export async function login(credentials) {
       console.log("[LOGIN] userData stocké (prénom/nom)");
     }
 
-    // ──────────────── ÉVÉNEMENT POUR NOTIFIER LE CONTEXTE ────────────────
-    window.dispatchEvent(new Event("auth:login"));
+    // ÉVÉNEMENT POUR NOTIFIER LE CONTEXTE IMMÉDIATEMENT
+    window.dispatchEvent(new Event("auth:login-success"));
 
     return { token, type, role };
   } catch (error) {
@@ -63,6 +69,7 @@ export async function login(credentials) {
     throw new Error(message);
   }
 }
+
 /**
  * Déconnexion
  */
@@ -73,6 +80,7 @@ export function logout() {
   localStorage.removeItem("userData");
   window.dispatchEvent(new Event("auth:logout"));
 }
+
 /**
  * Récupère le token JWT stocké
  * @returns {string|null}
@@ -80,6 +88,7 @@ export function logout() {
 export function getToken() {
   return localStorage.getItem("authToken");
 }
+
 /**
  * Vérifie si l'utilisateur est authentifié
  * @returns {boolean}
@@ -87,6 +96,7 @@ export function getToken() {
 export function isAuthenticated() {
   return !!getToken();
 }
+
 /**
  * Récupère le rôle stocké
  * @returns {string|null}
@@ -94,12 +104,14 @@ export function isAuthenticated() {
 export function getUserRole() {
   return localStorage.getItem("userRole");
 }
+
 /**
  * Vérifie un rôle précis
  */
 export function hasRole(role) {
   return getUserRole() === role;
 }
+
 /**
  * Récupère les données utilisateur stockées (prénom/nom)
  * @returns {Object|null}

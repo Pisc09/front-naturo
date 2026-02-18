@@ -1,8 +1,7 @@
 // src/context/AuthContext.jsx
 import { createContext, useState, useEffect } from "react";
 import { getUserById } from "../service/userService";
-// eslint-disable-next-line no-unused-vars
-import { getToken, isAuthenticated } from "../service/authService";
+import { isAuthenticated } from "../service/authService";
 
 const AuthContext = createContext(null);
 
@@ -11,42 +10,56 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initAuth = async () => {
-      if (isAuthenticated()) {
-        // 1. On regarde d'abord si on a déjà stocké prénom/nom directement après login
-        const storedUserData = JSON.parse(
-          localStorage.getItem("userData") || "{}",
-        );
+    let isMounted = true;
 
-        if (storedUserData.firstname || storedUserData.lastname) {
+    const loadUser = async () => {
+      if (!isAuthenticated()) {
+        if (isMounted) setLoading(false);
+        return;
+      }
+
+      const storedUserData = JSON.parse(
+        localStorage.getItem("userData") || "{}",
+      );
+      if (storedUserData.firstname || storedUserData.lastname) {
+        if (isMounted) {
           setUser({
             firstname: storedUserData.firstname,
             lastname: storedUserData.lastname,
-            // on peut ajouter d'autres champs si besoin
           });
-        } else {
-          // 2. Sinon on utilise userId pour fetch le profil complet
-          const userId = localStorage.getItem("userId");
-          if (userId) {
-            try {
-              const userData = await getUserById(userId);
-              setUser(userData);
-            } catch (err) {
-              console.error("Échec récupération profil via getUserById", err);
-            }
+        }
+      } else {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+          try {
+            const userData = await getUserById(userId);
+            if (isMounted) setUser(userData);
+          } catch (err) {
+            console.error("Échec récupération profil via getUserById", err);
           }
         }
       }
-      setLoading(false);
+      if (isMounted) setLoading(false);
     };
 
-    initAuth();
+    loadUser();
 
-    // Nettoyage lors du logout global
-    const handleLogout = () => setUser(null);
+    // Rechargement après login
+    const handleLoginSuccess = () => {
+      console.log("[AuthContext] Événement login-success → re-fetch");
+      loadUser();
+    };
+    window.addEventListener("auth:login-success", handleLoginSuccess);
+
+    // Déconnexion
+    const handleLogout = () => {
+      if (isMounted) setUser(null);
+    };
     window.addEventListener("auth:logout", handleLogout);
 
     return () => {
+      isMounted = false;
+      window.removeEventListener("auth:login-success", handleLoginSuccess);
       window.removeEventListener("auth:logout", handleLogout);
     };
   }, []);
